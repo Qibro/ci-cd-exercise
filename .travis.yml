@@ -1,13 +1,25 @@
+# os yang di gunakan
+os:
+  - linux
+# bahasa
 language: php
+# distro 
+dist: trusty
 
 php:
-  - 7.0
-
-before_script:
-  - travis_retry composer self-update
-  - travis_retry composer install --prefer-source --no-interaction
-  - cp .env.example .env
-  - php artisan key:generate
-
-script:
-  - vendor/bin/phpunit
+  - '7.1'
+# service yang digunakan
+services:
+  - docker
+# grouping  task
+jobs:
+  include:
+  # melakukan testing 
+    - stage: "Tests"                
+      name: "Unit Test PHP"  
+      script: 
+      - travis_retry composer self-update
+      - travis_retry composer install --prefer-source --no-interaction
+      - cp .env.example .env
+      - php artisan key:generate
+      - vendor/bin/phpunit tests/Feature/ExampleTest.php
